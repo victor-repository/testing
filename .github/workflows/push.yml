@@ -14,13 +14,25 @@ jobs:
           name: Checkout repository
           uses: actions/checkout@v3
         -
-          name: build and push to docker
-          uses: docker/build-push-action@v3
+          name: Login to Docker Hub
+          uses: docker/login-action@v3
           with:
-            username: ${{ 'victormx' }}
-            password: ${{ 'Minimo8letra$' }}
-            # repository: ${{ github.repository }}
-            repository: ${{ 'victormx/testing' }}
-            tag_with_ref: true
-            tag_with_sha: true
-            tags: ${{ github.sha }}
+            username: ${{ secrets.DOCKER_USERNAME }}
+            password: ${{ secrets.DOCKER_PASSWORD }}
+
+          # name: build and push to docker
+          # uses: docker/build-push-action@v3
+          # with:
+          #   # username: ${{ secrets.DOCKER_USERNAME }}
+          #   # password: ${{ secrets.DOCKER_PASSWORD }}
+          #   # # repository: ${{ github.repository }}
+          #   # repository: ${{ 'victormx/testing }}
+          #   tag_with_ref: true
+          #   tag_with_sha: true
+          #   tags: ${{ github.sha }}
+        -
+            name: Build and push
+            uses: docker/build-push-action@v5
+            with:
+              push: true
+              tags: user/app:latest
